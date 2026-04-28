@@ -1,32 +1,43 @@
-FROM debian:latest
+FROM archlinux:latest
 
-RUN apt-get update -y
-RUN apt-get install curl git tar gzip \
-                    wget apt-transport-https gpg \
-                    fonts-font-awesome \
+RUN pacman -Syu jdk21-openjdk --noconfirm
+
+RUN pacman -Syu curl git tar gzip \
+                    wget \
                     lazygit \
                     tree-sitter-cli \
-                    ripgrep fd-find \
+                    ripgrep \
                     fzf \
                     nodejs \
                     luarocks \
-                    -y
+                    maven \
+                    npm \
+                    tree-sitter-cli \
+                    fd \
+                    ast-grep \
+                    fish \
+                    prettier \
+                    gcc \
+                    wl-clipboard \
+                    xdg-utils \
+                    perl \
+                    python \
+                    python-pipx \
+                    maven \
+                    neovim \
+                    --noconfirm
 
-RUN adduser linagora --shell /bin/bash --home /home/linagora 
+RUN useradd linagora --shell /bin/bash --home /home/linagora  -m
+
+COPY jdtls /home/linagora/jdtls
+
+RUN npm install -g neovim
 
 RUN mkdir /home/linagora/.config
 
 RUN chown -R linagora:linagora /home/linagora 
 
-RUN cd /opt && wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+RUN pipx install pynvim
 
-RUN tar -C /opt -xzf /opt/nvim-linux-x86_64.tar.gz
-
-RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor | tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
-RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
-
-RUN apt update -y
-RUN apt install temurin-21-jdk -y
-
-CMD ["/opt/nvim-linux-x86_64/bin/nvim"]
+CMD ["nvim"]
 
