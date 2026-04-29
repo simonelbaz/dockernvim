@@ -44,7 +44,5 @@ USER linagora
 
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
-RUN export PATH="/home/linagora/.local/bin:$PATH"
-
 CMD ["nvim"]
 
