@@ -27,6 +27,7 @@ RUN pacman -Syu curl git tar gzip \
                     neovim \
                     --noconfirm
 
+
 RUN useradd linagora --shell /bin/bash --home /home/linagora  -m
 
 COPY jdtls /home/linagora/jdtls
@@ -38,6 +39,12 @@ RUN mkdir /home/linagora/.config
 RUN chown -R linagora:linagora /home/linagora 
 
 RUN pipx install pynvim
+
+USER linagora
+
+RUN curl -fsSL https://claude.ai/install.sh | bash
+
+RUN export PATH="/home/linagora/.local/bin:$PATH"
 
 CMD ["nvim"]
 
