@@ -3,6 +3,7 @@ FROM archlinux:latest
 RUN pacman -Syu jdk21-openjdk --noconfirm
 
 RUN pacman -Syu curl git tar gzip \
+                    base-devel \
                     wget \
                     lazygit \
                     tree-sitter-cli \
@@ -21,6 +22,8 @@ RUN pacman -Syu curl git tar gzip \
                     wl-clipboard \
                     xdg-utils \
                     perl \
+                    cpanminus \
+                    ruby \
                     python \
                     python-pipx \
                     maven \
@@ -38,9 +41,10 @@ RUN mkdir /home/linagora/.config
 
 RUN chown -R linagora:linagora /home/linagora 
 
-RUN pipx install pynvim
-
 USER linagora
+
+RUN pipx install pynvim
+RUN gem install neovim && gem environment
 
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
