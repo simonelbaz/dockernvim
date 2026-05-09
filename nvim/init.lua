@@ -3,6 +3,7 @@ require('user.options')
 require('user.plugins')
 require('user.treesitter')
 require('user.lsp')
+require('user.coc')
 require('claudecode').setup(
 {
   "coder/claudecode.nvim",

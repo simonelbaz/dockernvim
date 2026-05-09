@@ -2,7 +2,7 @@ vim.cmd[[set completeopt+=menuone,noselect,popup]]
 
 vim.lsp.config['java_ls'] = {
   -- Command and arguments to start the server.
-  cmd = { '/home/linagora/jdtls/bin/jdtls' },
+  cmd = { '/opt/jdtls/bin/jdtls' },
   -- Filetypes to automatically attach to.
   filetypes = { 'java' },
   -- Sets the "workspace" to the directory where any of these files is found.
