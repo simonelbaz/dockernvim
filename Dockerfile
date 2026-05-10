@@ -28,25 +28,30 @@ RUN pacman -Syu curl git tar gzip \
                     python-pipx \
                     maven \
                     neovim \
+                    ccls \
                     --noconfirm
 
 
 RUN useradd linagora --shell /bin/bash --home /home/linagora  -m
-
-COPY jdtls /home/linagora/jdtls
+RUN chown -R linagora:linagora /home/linagora 
 
 RUN npm install -g neovim
 
-RUN mkdir /home/linagora/.config
-
-RUN chown -R linagora:linagora /home/linagora 
-
 USER linagora
+
+COPY jdtls /opt/jdtls
+RUN mkdir /home/linagora/.config
 
 RUN pipx install pynvim
 RUN gem install neovim && gem environment
 
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
-CMD ["nvim"]
+RUN mkdir -p ~/.local/share/nvim/site/pack/coc/start \
+    && cd ~/.local/share/nvim/site/pack/coc/start \
+    && git clone --branch release https://github.com/neoclide/coc.nvim.git --depth=1 \
+    && nvim -c "helptags coc.nvim/doc/ | q"
 
+COPY clangd /home/linagora/.clangd
+
+CMD ["nvim"]
